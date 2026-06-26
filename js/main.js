@@ -63,19 +63,48 @@
     setTimeout(() => { if (loader) loader.classList.add('hidden'); }, 1400);
   });
 
-  // Navbar scroll + WhatsApp hide on quote section
+  // ── Single unified scroll handler (RAF-throttled) ──
   const navbar = document.querySelector('.navbar');
   const whatsappBtn = document.querySelector('.whatsapp');
   const quoteSection = document.querySelector('.quote');
-  window.addEventListener('scroll', () => {
-    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 60);
+  const backBtn = document.querySelector('.back-to-top');
+  const heroBg = document.querySelector('.hero__bg img');
+  const heroHeight = window.innerHeight;
+  let scrollTicking = false;
+
+  function onScroll() {
+    const y = window.scrollY;
+
+    if (navbar) navbar.classList.toggle('scrolled', y > 60);
+
+    if (backBtn) backBtn.classList.toggle('visible', y > 600);
+
     if (whatsappBtn && quoteSection) {
       const qRect = quoteSection.getBoundingClientRect();
       const inQuote = qRect.top < window.innerHeight && qRect.bottom > 0;
       whatsappBtn.style.opacity = inQuote ? '0' : '1';
       whatsappBtn.style.pointerEvents = inQuote ? 'none' : 'auto';
     }
+
+    if (heroBg && !prefersReducedMotion && y < heroHeight) {
+      heroBg.style.transform = 'scale(' + (1.1 - y * 0.0001) + ') translateY(' + (y * 0.15) + 'px)';
+    }
+
+    scrollTicking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(onScroll);
+      scrollTicking = true;
+    }
   }, { passive: true });
+
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   // Mobile menu
   const toggleBtn = document.querySelector('.navbar__toggle');
@@ -179,28 +208,6 @@
       }
     });
   });
-
-  // Back to top
-  const backBtn = document.querySelector('.back-to-top');
-  if (backBtn) {
-    window.addEventListener('scroll', () => {
-      backBtn.classList.toggle('visible', window.scrollY > 600);
-    }, { passive: true });
-    backBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // Subtle parallax on hero background
-  const heroBg = document.querySelector('.hero__bg img');
-  if (heroBg && !prefersReducedMotion) {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight) {
-        heroBg.style.transform = 'scale(' + (1.1 - y * 0.0001) + ') translateY(' + (y * 0.15) + 'px)';
-      }
-    }, { passive: true });
-  }
 
   // Shipment tracker demo
   const trackerForm = document.getElementById('trackerForm');

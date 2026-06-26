@@ -186,6 +186,7 @@
       opacity: 0;
       transform: translateY(32px);
       transition: opacity 0.7s ease, transform 0.7s ease;
+      will-change: opacity, transform;
     }
 
     .reveal.visible {
@@ -253,10 +254,11 @@
       justify-content: space-between;
       padding: 14px 28px;
       background: rgba(8, 14, 30, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 14px;
+      will-change: background, box-shadow;
       transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -349,8 +351,8 @@
       left: 0;
       right: 0;
       background: rgba(8, 14, 30, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
       padding: var(--space-lg);
@@ -509,6 +511,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center 30%;
+      will-change: transform;
     }
 
     .hero__overlay {
@@ -1033,7 +1036,7 @@
     .why__orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
+      filter: blur(50px);
       opacity: 0.15;
       pointer-events: none;
       z-index: 0;
@@ -1245,7 +1248,7 @@
     .about__orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(100px);
+      filter: blur(60px);
       opacity: 0.1;
       pointer-events: none;
     }
@@ -1409,8 +1412,8 @@
       position: relative;
       padding: var(--space-2xl);
       background: rgba(37, 99, 235, 0.06);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(37, 99, 235, 0.15);
       border-radius: 20px;
       overflow: hidden;
@@ -1664,7 +1667,7 @@
     .quote__orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(100px);
+      filter: blur(60px);
       opacity: 0.12;
       pointer-events: none;
     }
@@ -1787,8 +1790,8 @@
     /* ── Form Card ── */
     .form-card {
       background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       padding: var(--space-2xl);
@@ -2056,6 +2059,7 @@
       display: flex;
       width: max-content;
       animation: marqueeScroll 30s linear infinite;
+      will-change: transform;
     }
 
     .marquee:hover {
