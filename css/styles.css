@@ -269,13 +269,12 @@
     }
 
     .navbar__logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 400;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
       color: var(--white);
       text-decoration: none;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -2250,12 +2249,11 @@
     }
 
     .footer__brand-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 400;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
       color: var(--white);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
       display: flex;
       align-items: center;
       gap: 10px;
