@@ -1,0 +1,106 @@
+/* ══════════════════════════════════════
+   Arabic RTL Support
+   ══════════════════════════════════════ */
+[dir="rtl"] {
+  font-family: 'Rubik', 'Noto Sans Arabic', sans-serif;
+}
+
+[dir="rtl"] .hero__eyebrow::before,
+[dir="rtl"] .services__eyebrow::before,
+[dir="rtl"] .about__eyebrow::before,
+[dir="rtl"] .quote__eyebrow::before {
+  order: 1;
+}
+
+[dir="rtl"] .hero__content,
+[dir="rtl"] .services__header,
+[dir="rtl"] .about {
+  text-align: right;
+}
+
+[dir="rtl"] .hero__ctas {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .timeline {
+  padding-left: 0;
+  padding-right: 32px;
+}
+
+[dir="rtl"] .timeline::before {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .timeline__item::before {
+  left: auto;
+  right: -36px;
+}
+
+[dir="rtl"] .hero__micro {
+  left: auto;
+  right: 8%;
+}
+
+[dir="rtl"] .hero__scroll-hint {
+  right: auto;
+  left: 8%;
+}
+
+[dir="rtl"] .btn-primary svg,
+[dir="rtl"] .btn-secondary svg {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .coverage__city:hover {
+  transform: translateX(-4px);
+}
+
+[dir="rtl"] .footer__link:hover {
+  transform: translateX(-4px);
+}
+
+[dir="rtl"] .faq__answer p {
+  padding-right: 0;
+  padding-left: 48px;
+}
+
+[dir="rtl"] .quote__perk {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir="rtl"] .whatsapp {
+  right: auto;
+  left: 28px;
+}
+
+[dir="rtl"] .back-to-top {
+  left: auto;
+  right: 28px;
+}
+
+[dir="rtl"] .footer__main {
+  direction: rtl;
+}
+
+[dir="rtl"] .navbar__links {
+  direction: rtl;
+}
+
+[dir="rtl"] .form__phone-prefix {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+}
+
+[dir="rtl"] .form__phone-wrapper .form__input {
+  border-radius: 10px 0 0 10px;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .hero__micro { right: 6%; }
+  [dir="rtl"] .hero__scroll-hint { left: 6%; }
+  [dir="rtl"] .whatsapp { left: 20px; }
+  [dir="rtl"] .back-to-top { right: 20px; }
+}
