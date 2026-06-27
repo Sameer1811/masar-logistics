@@ -4,10 +4,13 @@
   var canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
 
-  var ctx = canvas.getContext('2d', { alpha: false });
+  var ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
   var frames = new Array(FRAME_COUNT);
+  var bitmaps = new Array(FRAME_COUNT);
   var loadedCount = 0;
-  var lastDrawn = -1;
+  var currentFrame = 0;
+  var drawnFrame = -1;
+  var rafId = null;
 
   var heroContent = document.querySelector('.hero__content');
   var scrollHint = document.querySelector('.hero__scroll-hint');
@@ -15,20 +18,29 @@
   var loaderProgress = loader ? loader.querySelector('.loader__progress') : null;
   var overlay = document.querySelector('.hero__overlay');
 
-  // Set canvas to full HD once
-  canvas.width = 1920;
-  canvas.height = 1080;
+  // Match canvas to screen for crisp rendering without overdraw
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var cw = Math.min(window.innerWidth * dpr, 1920);
+  var ch = Math.min(window.innerHeight * dpr, 1080);
+  canvas.width = cw;
+  canvas.height = ch;
 
   function pad(n) { return String(n).padStart(3, '0'); }
 
-  function drawFrame(i) {
-    if (i === lastDrawn) return;
-    if (i < 0) i = 0;
-    if (i >= FRAME_COUNT) i = FRAME_COUNT - 1;
-    var img = frames[i];
-    if (!img || !img.complete) return;
-    ctx.drawImage(img, 0, 0, 1920, 1080);
-    lastDrawn = i;
+  // RAF-decoupled draw loop — never draws in the scroll callback itself
+  function drawLoop() {
+    if (currentFrame !== drawnFrame) {
+      var src = bitmaps[currentFrame] || frames[currentFrame];
+      if (src) {
+        ctx.drawImage(src, 0, 0, cw, ch);
+        drawnFrame = currentFrame;
+      }
+    }
+    rafId = requestAnimationFrame(drawLoop);
+  }
+
+  function stopDrawLoop() {
+    if (rafId) cancelAnimationFrame(rafId);
   }
 
   function initGSAP() {
@@ -38,8 +50,10 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    var obj = { frame: 0 };
     var isMobile = window.innerWidth < 768;
+
+    // Start draw loop
+    drawLoop();
 
     ScrollTrigger.create({
       trigger: '.hero',
@@ -47,59 +61,74 @@
       end: isMobile ? '+=200%' : '+=300%',
       pin: true,
       pinSpacing: true,
-      scrub: 1,
+      scrub: 2,
       anticipatePin: 1,
       onUpdate: function (self) {
-        // Draw frame
-        var frameIndex = Math.round(self.progress * (FRAME_COUNT - 1));
-        drawFrame(frameIndex);
+        var p = self.progress;
 
-        // Scroll hint: visible at start, gone once scrolling
-        if (scrollHint) {
-          scrollHint.style.opacity = self.progress < 0.03 ? '1' : '0';
-        }
+        // Just set the target frame — drawLoop handles the actual draw
+        currentFrame = Math.round(p * (FRAME_COUNT - 1));
 
-        // Overlay: fade from visible to transparent as we scrub
-        if (overlay) {
-          overlay.style.opacity = String(1 - self.progress * 0.6);
-        }
+        // Scroll hint
+        if (scrollHint) scrollHint.style.opacity = p < 0.03 ? '1' : '0';
 
-        // Hero content: reveal at 85%
+        // Overlay fade
+        if (overlay) overlay.style.opacity = String(1 - p * 0.6);
+
+        // Content reveal at 85%
         if (heroContent) {
-          if (self.progress >= 0.85) {
+          if (p >= 0.85) {
             heroContent.classList.add('is-revealed');
           } else {
             heroContent.classList.remove('is-revealed');
           }
         }
-      }
+      },
+      onLeave: function () { stopDrawLoop(); },
+      onEnterBack: function () { drawLoop(); }
     });
+  }
+
+  // Pre-decode images into ImageBitmaps for instant GPU drawing
+  function decodeToBitmap(idx) {
+    var img = frames[idx];
+    if (img && img.complete && typeof createImageBitmap === 'function') {
+      createImageBitmap(img).then(function (bmp) {
+        bitmaps[idx] = bmp;
+      }).catch(function () {});
+    }
   }
 
   function onAllLoaded() {
     // Draw first frame
-    drawFrame(0);
+    currentFrame = 0;
+    drawnFrame = -1;
+    var src = bitmaps[0] || frames[0];
+    if (src) ctx.drawImage(src, 0, 0, cw, ch);
+    drawnFrame = 0;
+
+    // Pre-decode all to bitmaps in background
+    for (var i = 0; i < FRAME_COUNT; i++) decodeToBitmap(i);
 
     // Hide loader
     if (loader) loader.classList.add('hidden');
-
-    // Show scroll hint
     if (scrollHint) scrollHint.style.opacity = '1';
 
-    // Init GSAP scroll scrub
     initGSAP();
   }
 
-  // Preload all frames
+  // Preload frames
   for (var i = 0; i < FRAME_COUNT; i++) {
     (function (idx) {
       var img = new Image();
       img.decoding = 'async';
       img.onload = function () {
         loadedCount++;
-        // Draw first frame as soon as it loads
-        if (idx === 0) drawFrame(0);
-        // Update loader
+        if (idx === 0) {
+          ctx.drawImage(img, 0, 0, cw, ch);
+          drawnFrame = 0;
+        }
+        decodeToBitmap(idx);
         if (loaderProgress) {
           loaderProgress.style.width = ((loadedCount / FRAME_COUNT) * 100) + '%';
         }
