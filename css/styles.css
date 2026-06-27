@@ -128,50 +128,10 @@ body {
   top: 16px;
 }
 
-/* ── Hero entrance animations ── */
-.hero__eyebrow {
-  animation: heroSlideUp 0.8s ease 0.4s both;
-}
-
-.hero__headline {
-  animation: heroClipReveal 1s ease 0.6s both;
-}
-
+/* ── Hero highlight glow ── */
 .hero__headline .highlight {
   display: inline-block;
-  animation: heroGlowIn 1.2s ease 1.2s both;
-}
-
-.hero__subheadline {
-  animation: heroSlideUp 0.8s ease 1s both;
-}
-
-.hero__ctas {
-  animation: heroSlideUp 0.8s ease 1.3s both;
-}
-
-.hero__scroll-hint {
-  animation: heroFadeIn 1s ease 2s both;
-}
-
-@keyframes heroSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes heroClipReveal {
-  from { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateY(20px); }
-  to { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
-}
-
-@keyframes heroGlowIn {
-  from { opacity: 0; text-shadow: 0 0 0 rgba(249, 115, 22, 0); }
-  to { opacity: 1; text-shadow: 0 0 30px rgba(249, 115, 22, 0.3); }
-}
-
-@keyframes heroFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  text-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
 }
 
 /* ── Scroll reveal animations ── */
@@ -494,6 +454,12 @@ body {
   z-index: 0;
 }
 
+.hero__bg canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hero__bg img {
   width: 100%;
   height: 100%;
@@ -502,7 +468,14 @@ body {
 }
 
 .hero__content {
-  transition: opacity 0.6s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero__content.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero__scroll-hint {

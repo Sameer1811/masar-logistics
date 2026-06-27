@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tracker.css">
   <link rel="stylesheet" href="css/rtl.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
 </head>
 <body>
   <a href="#services" class="skip-link">Skip to main content</a>
@@ -50,7 +52,7 @@
   <!-- Section 1 — Hero -->
   <section class="hero" aria-label="Hero">
     <div class="hero__accent-line" aria-hidden="true"></div>
-    <div class="hero__bg" aria-hidden="true"><img src="assets/hero-bg.jpg" alt="" loading="eager"></div>
+    <div class="hero__bg" aria-hidden="true"><canvas id="heroCanvas"></canvas></div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__content">
       <p class="hero__eyebrow" data-i18n="heroEyebrow">Masar Logistics — KSA &amp; GCC</p>
