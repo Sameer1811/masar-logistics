@@ -47,6 +47,11 @@
       gsap.registerPlugin(ScrollTrigger);
 
       const currentFrame = { value: 0 };
+      const overlay = document.querySelector('.hero__overlay');
+      const heroCanvas = document.getElementById('heroCanvas');
+
+      // Start blurred and dark
+      if (heroCanvas) heroCanvas.style.filter = 'blur(8px) brightness(0.4)';
 
       // Pin hero and scrub through frames
       const scrubTl = gsap.timeline({
@@ -57,14 +62,28 @@
           pin: true,
           scrub: 0.5,
           onUpdate: (self) => {
+            var p = self.progress;
+
+            // Gradually clear the blur and brighten (0→70% of scrub)
+            if (heroCanvas) {
+              var blurVal = Math.max(0, 8 * (1 - p / 0.7));
+              var brightVal = 0.4 + 0.6 * Math.min(p / 0.7, 1);
+              heroCanvas.style.filter = 'blur(' + blurVal.toFixed(1) + 'px) brightness(' + brightVal.toFixed(2) + ')';
+            }
+
+            // Fade overlay from heavy to subtle
+            if (overlay) {
+              overlay.style.opacity = 1 - (p * 0.5);
+            }
+
             // Hide scroll hint once user starts scrolling
             if (scrollHint) {
-              scrollHint.style.opacity = self.progress > 0.05 ? '0' : '1';
+              scrollHint.style.opacity = p > 0.05 ? '0' : '1';
             }
 
             // Show hero content at 85% progress
             if (heroContent) {
-              if (self.progress >= 0.85) {
+              if (p >= 0.85) {
                 heroContent.classList.add('hero-visible');
               } else {
                 heroContent.classList.remove('hero-visible');
