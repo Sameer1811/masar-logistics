@@ -57,19 +57,12 @@
     counterObserver.observe(el);
   });
 
-  // Page loader
-  const loader = document.querySelector('.loader');
-  window.addEventListener('load', () => {
-    setTimeout(() => { if (loader) loader.classList.add('hidden'); }, 1400);
-  });
 
   // ── Single unified scroll handler (RAF-throttled) ──
   const navbar = document.querySelector('.navbar');
   const whatsappBtn = document.querySelector('.whatsapp');
   const quoteSection = document.querySelector('.quote');
   const backBtn = document.querySelector('.back-to-top');
-  const heroBg = document.querySelector('.hero__bg img');
-  const heroHeight = window.innerHeight;
   let scrollTicking = false;
 
   function onScroll() {
@@ -84,10 +77,6 @@
       const inQuote = qRect.top < window.innerHeight && qRect.bottom > 0;
       whatsappBtn.style.opacity = inQuote ? '0' : '1';
       whatsappBtn.style.pointerEvents = inQuote ? 'none' : 'auto';
-    }
-
-    if (heroBg && !prefersReducedMotion && y < heroHeight) {
-      heroBg.style.transform = 'scale(' + (1.1 - y * 0.0001) + ') translateY(' + (y * 0.15) + 'px)';
     }
 
     scrollTicking = false;
