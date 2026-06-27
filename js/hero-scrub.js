@@ -6,14 +6,19 @@
   var scrollHint = document.querySelector('.hero__scroll-hint');
   var loader = document.querySelector('.loader');
   var overlay = document.querySelector('.hero__overlay');
+  var started = false;
 
   video.currentTime = 0;
 
   function start() {
+    if (started) return;
+    started = true;
+
     if (loader) loader.classList.add('hidden');
     if (scrollHint) scrollHint.style.opacity = '1';
 
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      started = false;
       return setTimeout(start, 50);
     }
 
