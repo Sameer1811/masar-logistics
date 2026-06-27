@@ -2,10 +2,8 @@
   var video = document.getElementById('heroVideo');
   if (!video) return;
 
-  var heroContent = document.querySelector('.hero__content');
   var scrollHint = document.querySelector('.hero__scroll-hint');
   var loader = document.querySelector('.loader');
-  var overlay = document.querySelector('.hero__overlay');
   var started = false;
 
   video.currentTime = 0;
@@ -15,7 +13,6 @@
     started = true;
 
     if (loader) loader.classList.add('hidden');
-    if (scrollHint) scrollHint.style.opacity = '1';
 
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
       started = false;
@@ -36,17 +33,8 @@
       scrub: true,
       anticipatePin: 1,
       onUpdate: function (self) {
-        var p = self.progress;
-        video.currentTime = p * duration;
-        if (scrollHint) scrollHint.style.opacity = p < 0.03 ? '1' : '0';
-        if (overlay) overlay.style.opacity = String(1 - p * 0.6);
-        if (heroContent) {
-          if (p >= 0.85) {
-            heroContent.classList.add('is-revealed');
-          } else {
-            heroContent.classList.remove('is-revealed');
-          }
-        }
+        video.currentTime = self.progress * duration;
+        if (scrollHint) scrollHint.style.opacity = self.progress < 0.03 ? '1' : '0';
       }
     });
   }

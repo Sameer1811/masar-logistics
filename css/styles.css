@@ -461,14 +461,9 @@ body {
 }
 
 .hero__content {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.hero__content.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
+  position: relative;
+  z-index: 2;
+  max-width: 740px;
 }
 
 .hero__scroll-hint {
@@ -480,9 +475,9 @@ body {
   inset: 0;
   background: linear-gradient(
     170deg,
-    rgba(8, 14, 30, 0.7) 0%,
-    rgba(15, 23, 42, 0.5) 40%,
-    rgba(30, 58, 138, 0.25) 100%
+    rgba(8, 14, 30, 0.6) 0%,
+    rgba(15, 23, 42, 0.45) 40%,
+    rgba(30, 58, 138, 0.2) 100%
   );
   z-index: 1;
 }
