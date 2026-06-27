@@ -128,10 +128,50 @@ body {
   top: 16px;
 }
 
-/* ── Hero scroll-scrub ── */
+/* ── Hero entrance animations ── */
+.hero__eyebrow {
+  animation: heroSlideUp 0.8s ease 0.4s both;
+}
+
+.hero__headline {
+  animation: heroClipReveal 1s ease 0.6s both;
+}
+
 .hero__headline .highlight {
   display: inline-block;
-  text-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+  animation: heroGlowIn 1.2s ease 1.2s both;
+}
+
+.hero__subheadline {
+  animation: heroSlideUp 0.8s ease 1s both;
+}
+
+.hero__ctas {
+  animation: heroSlideUp 0.8s ease 1.3s both;
+}
+
+.hero__scroll-hint {
+  animation: heroFadeIn 1s ease 2s both;
+}
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroClipReveal {
+  from { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateY(20px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
+}
+
+@keyframes heroGlowIn {
+  from { opacity: 0; text-shadow: 0 0 0 rgba(249, 115, 22, 0); }
+  to { opacity: 1; text-shadow: 0 0 30px rgba(249, 115, 22, 0.3); }
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ── Scroll reveal animations ── */
