@@ -42,14 +42,6 @@
             // Hide scroll hint
             if (scrollHint) scrollHint.style.opacity = p > 0.05 ? '0' : '1';
 
-            // Show hero content at 85%
-            if (heroContent) {
-              if (p >= 0.85) {
-                heroContent.classList.add('hero-visible');
-              } else {
-                heroContent.classList.remove('hero-visible');
-              }
-            }
           }
         }
       });
